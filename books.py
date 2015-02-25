@@ -11,7 +11,7 @@ sys.stdout = codecs.getwriter('utf-8')(sys.stdout)
 
 
 def parse_books():
-    # url = 'http://feeds.5by5.tv/b2w'
+    url = 'http://feeds.5by5.tv/b2w'
     filename = './b2w.xml'
     pattern = '<a .*? href="(http:\/\/www\.amazon\.com[^"]*).*?>(.*?)</a>\
 (?:</h4>\s*?(?:<p>(.*?)</p>))?'
@@ -33,7 +33,7 @@ Book: .*?)</a>'
     regex2 = re.compile(pattern2, re.IGNORECASE)
     books = []
 
-    feed = feedparser.parse(filename)
+    feed = feedparser.parse(url)
 
     for episode in feed.entries:
         links = regex.findall(episode.content[0].value)
