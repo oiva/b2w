@@ -12,7 +12,7 @@ sys.stdout = codecs.getwriter('utf-8')(sys.stdout)
 
 def parse_books():
     url = 'http://feeds.5by5.tv/b2w'
-    filename = './b2w.xml'
+    #filename = './b2w.xml'
     pattern = '<a .*? href="(http:\/\/www\.amazon\.com[^"]*).*?>(.*?)</a>\
 (?:</h4>\s*?(?:<p>(.*?)</p>))?'
     pattern2 = '<a .*? href="((?!http:\/\/www\.amazon).*?)" .*?>((?:Audio)?\
@@ -101,10 +101,12 @@ def produce_list(books):
             row = '<tr><td data-value="%s"><a href="%s">%s</a></td>'\
                   % (titlevalue, link, title)
 
+        author_value = get_author_value(author)
+
         # author and episode information
-        row += '<td>%s</td>\
+        row += '<td class="author" data-value="%s">%s</td>\
                 <td data-value="%s"><a href="%s">%s</a></td>'\
-                % (author, episode, episodeLink, episodeTitle)
+                % (author_value, author, episode, episodeLink, episodeTitle)
 
         # compute occurences + identifying value to group by occurence, title
         key = re.sub(r'\s{2,}', ' ', title)[:22]
@@ -211,6 +213,16 @@ def get_author(title):
     author = re.sub(r',([^\s])', r', \1', author)
 
     return (author, title)
+
+
+def get_author_value(author):
+    if author == '':
+        return ''
+    parts = author.split(',')
+    author = parts[0].strip(' ')
+    parts = author.split(' ')
+    author = parts[-1]
+    return author
 
 
 def group_books(books):
