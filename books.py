@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/local/bin/python
 # -*- coding: UTF-8 -*-
 
 import codecs
@@ -12,7 +12,7 @@ sys.stdout = codecs.getwriter('utf-8')(sys.stdout)
 
 def parse_books():
     url = 'http://feeds.5by5.tv/b2w'
-    #filename = './b2w.xml'
+    # filename = './b2w.xml'
     pattern = '<a .*? href="(http:\/\/www\.amazon\.com[^"]*).*?>(.*?)</a>\
 (?:</h4>\s*?(?:<p>(.*?)</p>))?'
     pattern2 = '<a .*? href="((?!http:\/\/www\.amazon).*?)" .*?>((?:Audio)?\
