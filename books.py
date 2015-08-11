@@ -85,7 +85,8 @@ def produce_list(books):
         # parse episode number for sorting
         episode = episodeTitle[:episodeTitle.find(':')]
         titlevalue = re.sub(r'^(A|An|The)\s', '', title)
-        titlevalue = re.sub(r'\s', '', titlevalue)[:20]
+        titlevalue = re.sub(r'[\s,:\-\.\(\&\d]', '', titlevalue)[:20]
+        titlevalue = titlevalue.lower()
 
         # include book description if it exists
         if desc and not re.search(r'sponsored by', desc, re.IGNORECASE):
