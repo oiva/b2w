@@ -43,19 +43,16 @@ Book: .*?)</a>'
 
         for link in links:
             # skip items that are not really books
-            is_book = True
             for category in skip:
                 if category in link[1]:
-                    is_book = False
-            if not is_book:
-                continue
+                    break
+            else:
+                # include episode info
+                link += (episode.link, episode.title)
 
-            # include episode info
-            link += (episode.link, episode.title)
-
-            # no duplicates
-            if link not in books:
-                books.append(link)
+                # no duplicates
+                if link not in books:
+                    books.append(link)
     return books
 
 
