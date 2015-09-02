@@ -29,7 +29,7 @@ Book: .*?)</a>'
             'Home &amp; Kitchen', 'Brass No Soliciting Sign', 'Light Bulb',
             'Ultra Pro Resealable Current Size Comic Bags', 'Model Rocket Kit',
             'Arts, Crafts &amp; Sewing', 'Colored Pencils', 'Wish List',
-            'Clothing', 'Pasta Bowls']
+            'Clothing', 'Pasta Bowls', 'Prime Pantry']
     regex = re.compile(pattern, re.IGNORECASE)
     regex2 = re.compile(pattern2, re.IGNORECASE)
     books = []
