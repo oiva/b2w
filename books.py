@@ -1,6 +1,13 @@
 #!/usr/local/bin/python
 # -*- coding: UTF-8 -*-
 
+"""
+Script for parsing book recommendations from Back to Work's feed.
+
+This  script fetches shownotes of Back to Work, a podcast, and parses the
+different book recommendations made on the show.
+"""
+
 import codecs
 from datetime import datetime
 import feedparser
@@ -11,6 +18,7 @@ sys.stdout = codecs.getwriter('utf-8')(sys.stdout)
 
 
 def parse_books():
+    """Function for parsing feed and gathering links."""
     url = 'http://feeds.5by5.tv/b2w'
     # filename = './b2w.xml'
     pattern = '<a .*? href="(http:\/\/www\.amazon\.com[^"]*).*?>(.*?)</a>\
@@ -59,6 +67,11 @@ Book: .*?)</a>'
 
 
 def produce_list(books):
+    """
+    Function taking a list of books, and producing two HTML tables of books.
+
+    The function alsow writes the HTML to a file using a template (index.tmpl).
+    """
     filename = './index.tmpl'
     comics = ['Marvel Famous Firsts', 'Marvel Now', 'Thor:', 'X-Men',
               'Hawkeye', 'American Vampire', 'The Walking Dead', 'Watchmen',
@@ -70,8 +83,8 @@ def produce_list(books):
               '5 Ronin', 'Runaways', 'The Immortal Iron Fist', 'Superman',
               'The Wonderful Wizard of Oz', 'World War Hulk',
               'Incredible Hulk', 'Infinity Gauntlet', 'Punk Rock Jesus',
-              'Black Science', 'Sex Criminals', 'Scott Pilgrim', 'BONE', 'Hilo'
-              'Amulet']
+              'Black Science', 'Sex Criminals', 'Scott Pilgrim', 'BONE',
+              'Hilo', 'Amulet']
 
     booklist = comiclist = ''
     bookcount = comiccount = authorcount = gtd = desccount = 0
@@ -157,13 +170,15 @@ def produce_list(books):
 
 
 def get_author(title):
-    '''
-    Parse author name(s) from book title. Usually book title contains the
-    authors separated by a colon, for example "The Road: Cormac McCarthy".
-    In some cases the colon is not followed by authors, for example:
-    "Super Graphic: A Visual Guide to the Comic Book Universe". Therefore we
-    need to guess if the string contains names or not. (By counting commas :)
-    '''
+    """
+    Parse author name(s) from book title.
+
+    Usually book title contains the authors separated by a colon, for example
+    "The Road: Cormac McCarthy". In some cases the colon is not followed by
+    authors, for example: "Super Graphic: A Visual Guide to the Comic Book
+    Universe". Therefore we need to guess if the string contains names or not.
+    (By counting commas :)
+    """
     # split title into title and author. Usually separated by ':'.
     if title.count(':') == title.count(' - ') and title.count(':') > 0:
         parts = title.split(' - ')
@@ -218,6 +233,7 @@ def get_author(title):
 
 
 def get_author_value(author):
+    """Function converting an author name to a data-value used for sorting."""
     if author == '':
         return ''
     parts = author.split(',')
@@ -228,13 +244,14 @@ def get_author_value(author):
 
 
 def group_books(books):
-    '''
-    Group books by their title. Take a substring of the title to match titles
-    like these:
+    """
+    Group books by their title.
+
+    Take a substring of the title to match titles like these:
     "Writing Down the Bones: Freeing the Writer Within (Shambhala Library)"
     "Writing Down the Bones eBook"
     "Writing Down the Bones"
-    '''
+    """
     groups = {}
     for book in books:
         key = re.sub(r'\s{2,}', ' ', book[2])[:22]
@@ -246,11 +263,13 @@ def group_books(books):
 
 
 def filter_books(books):
-    '''
+    """
+    Function for clearing book titles of non-title elements.
+
     Take a book title like "Born Standing Up: A Comic's Life: Steve Martin:
         9781416553656: Amazon.com: Books"
     ...and return title: Born Standing Up: A Comic's Life, author: Steve Martin
-    '''
+    """
     filteredwords = [';Book: ', 'BOOK: ', ': Books', ':Books', '[Amazon]',
                      'MDM: ', 'Amazon.com: Boo', 'Amazon: ', 'Amazon.com: ',
                      ': Amazon.com', ' at Amazon.com', ':Amazon', '(Amazon)',
