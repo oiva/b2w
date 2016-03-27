@@ -29,7 +29,9 @@ Book: .*?)</a>'
             'Home &amp; Kitchen', 'Brass No Soliciting Sign', 'Light Bulb',
             'Ultra Pro Resealable Current Size Comic Bags', 'Model Rocket Kit',
             'Arts, Crafts &amp; Sewing', 'Colored Pencils', 'Wish List',
-            'Clothing', 'Pasta Bowls', 'Prime Pantry', 'Kum AS2']
+            'Clothing', 'Pasta Bowls', 'Prime Pantry', 'Kum AS2',
+            'Amazon Echo', 'Echo Dot', 'Hepa Filter Air Purifiers',
+            'Pencil Set']
     regex = re.compile(pattern, re.IGNORECASE)
     regex2 = re.compile(pattern2, re.IGNORECASE)
     books = []
@@ -67,7 +69,9 @@ def produce_list(books):
               'Y: The Last Man', 'Zita the Spacegirl', 'Invincible:',
               '5 Ronin', 'Runaways', 'The Immortal Iron Fist', 'Superman',
               'The Wonderful Wizard of Oz', 'World War Hulk',
-              'Incredible Hulk', 'Infinity Gauntlet', 'Punk Rock Jesus']
+              'Incredible Hulk', 'Infinity Gauntlet', 'Punk Rock Jesus',
+              'Black Science', 'Sex Criminals', 'Scott Pilgrim', 'BONE', 'Hilo'
+              'Amulet']
 
     booklist = comiclist = ''
     bookcount = comiccount = authorcount = gtd = desccount = 0
