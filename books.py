@@ -31,6 +31,7 @@ authors = {
         'and Warrior to Be More Creative': 'Roger Von Oech',
     'Mindfulness in Plain English': 'Bhante Henepola Gunaratana',
     'Getting Things Done: The Art of Stress-Free Productivity': 'David Allen',
+    'Getting Things Done': 'David Allen',
     'Wherever You Go, There You Are: Mindfulness Meditation in Everyday Life' +
         ' [&quot;...book with brown and green cover...&quot;]':
         'Jon Kabat-Zinn',
@@ -47,11 +48,11 @@ authors = {
 def parse_books():
     """Function for parsing feed and gathering links."""
     url = 'http://feeds.5by5.tv/b2w'
-    filename = './b2w.xml'
-    pattern = '<a .*? href="(http:\/\/www\.amazon\.com[^"]*).*?>(.*?)</a>\
+    # filename = './b2w.xml'
+    pattern = '<a[^>]* href="(http:\/\/www\.amazon\.com[^"]*).*?>(.*?)</a>\
 (?:</h4>\s*?(?:<p>(.*?)</p>))?'
-    pattern2 = '<a .*? href="((?!http:\/\/www\.amazon).*?)" .*?>((?:Audio)?\
-Book: .*?)</a>'
+    pattern2 = '<a[^>]*? href="((?!http:\/\/www\.amazon)[^"]*?)"[^>]*?>\
+((?:Audio)?Book: .*?)</a>'
     skip = ['Health &amp; Personal Care', 'Toys &amp; Games', 'MP3 Downloads',
             'Computers &amp; Accessories', 'Musical Instruments', 'Moleskine',
             'Everything Else', 'Music', 'Electronics', 'Movies &amp; TV',
@@ -71,8 +72,8 @@ Book: .*?)</a>'
     regex2 = re.compile(pattern2, re.IGNORECASE)
     books = []
 
-    # feed = feedparser.parse(url)
-    feed = feedparser.parse(filename)
+    feed = feedparser.parse(url)
+    # feed = feedparser.parse(filename)
 
     for episode in feed.entries:
         links = regex.findall(episode.content[0].value)
@@ -260,9 +261,6 @@ def get_author(title):
     if author == '' and title in authors:
         author = authors[title]
 
-    if author == '':
-        print title
-
     # change "Author,Author" to "Author, Author"
     author = re.sub(r',([^\s])', r', \1', author)
 
@@ -325,8 +323,9 @@ def filter_books(books):
                      ': Amazon.com', ' at Amazon.com', ':Amazon', '(Amazon)',
                      '(Amazon.com)', ': Explore similar items',
                      ' - Amazon.com', 'Kindle Store', 'eBook', ' Audio',
-                     ' (HIGHLY recommended by Merlin)']
+                     ' (HIGHLY recommended by Merlin)', '<em>', '</em>']
     filteredbooks = []
+    temp_books = []
     for i, book in enumerate(books):
         desc = False
         if len(book) == 5:
@@ -344,6 +343,13 @@ def filter_books(books):
         title = re.sub(r'^(Audiobook|Book):', '', title)
         title = title.replace('&#x27;', '\'')
 
+        # GTD with other names
+        title = re.sub(r'^Getting Things Done$',
+                       'Getting Things Done: The Art of Stress-Free ' +
+                       'Productivity', title)
+        if title == 'pick up your own copy of GTD':
+            title = 'Getting Things Done: The Art of Stress-Free Productivity'
+
         # one stupid link in ep 72
         if title == 'Amazon':
             title = 'The Now Habit: A Strategic Program for Overcoming\
@@ -359,7 +365,12 @@ def filter_books(books):
 
         filteredbook = (link, originaltitle, title, desc, author, episodeLink,
                         episodeTitle)
-        filteredbooks.append(filteredbook)
+        temp_book = (link, re.sub(r'\s{2,}', ' ', title), desc, author.strip(),
+                     episodeLink, episodeTitle)
+
+        if temp_book not in temp_books:
+            filteredbooks.append(filteredbook)
+            temp_books.append(temp_book)
     return filteredbooks
 
 # run
