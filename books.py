@@ -16,11 +16,38 @@ import re
 
 sys.stdout = codecs.getwriter('utf-8')(sys.stdout)
 
+authors = {
+    'Christopher Eliopoulos': 'Christopher Eliopoulos',
+    'So Good They Can\'t Ignore You: Why Skills Trump Passion in the Quest ' +
+    'for Work You Love': 'Cal Newport',
+    'Secret War Brian Michael Bendis, Gabriele Dell Otto':
+        'Brian Michael Bendis, Gabriele Dell Otto',
+    'On Writing: 10th Anniversary Edition: A Memoir of the Craft':
+        'Stephen King',
+    'The Creative Habit: Learn It and Use It for Life':
+        'Twyla Tharp, Mark Reiter',
+    'A Confederacy of Dunces': 'John Kennedy Toole, Walker Percy',
+    'A Kick in the Seat of the Pants: Using Your Explorer, Artist, Judge, ' +
+        'and Warrior to Be More Creative': 'Roger Von Oech',
+    'Mindfulness in Plain English': 'Bhante Henepola Gunaratana',
+    'Getting Things Done: The Art of Stress-Free Productivity': 'David Allen',
+    'Wherever You Go, There You Are: Mindfulness Meditation in Everyday Life' +
+        ' [&quot;...book with brown and green cover...&quot;]':
+        'Jon Kabat-Zinn',
+    'The Waste Land: A Facsimile and Transcript of the Original Drafts ' +
+        'Including the Annotations of Ezra Pound': 'T. S. Eliot',
+    'The Man Who Couldn\'t Stop: OCD and the True Story of a Life Lost in ' +
+        'Thought': 'David Adam',
+    'The Adventure Time Encyclopaedia (Encyclopedia): Inhabitants, Lore, ' +
+        'Spells, and Ancient Crypt Warnings of the Land of Ooo Circa 19.56 ' +
+        'B.G.E. - 501 A.G.E.': 'Martin Olson'
+}
+
 
 def parse_books():
     """Function for parsing feed and gathering links."""
     url = 'http://feeds.5by5.tv/b2w'
-    # filename = './b2w.xml'
+    filename = './b2w.xml'
     pattern = '<a .*? href="(http:\/\/www\.amazon\.com[^"]*).*?>(.*?)</a>\
 (?:</h4>\s*?(?:<p>(.*?)</p>))?'
     pattern2 = '<a .*? href="((?!http:\/\/www\.amazon).*?)" .*?>((?:Audio)?\
@@ -44,8 +71,8 @@ Book: .*?)</a>'
     regex2 = re.compile(pattern2, re.IGNORECASE)
     books = []
 
-    feed = feedparser.parse(url)
-    # feed = feedparser.parse(filename)
+    # feed = feedparser.parse(url)
+    feed = feedparser.parse(filename)
 
     for episode in feed.entries:
         links = regex.findall(episode.content[0].value)
@@ -229,6 +256,12 @@ def get_author(title):
     # cleanup: remove whitespace and quotes around title
     title = re.sub(r'^\s?&quot;(.*)&quot;\s?$', r'\1', title)
     title = title.strip(' :,')
+
+    if author == '' and title in authors:
+        author = authors[title]
+
+    if author == '':
+        print title
 
     # change "Author,Author" to "Author, Author"
     author = re.sub(r',([^\s])', r', \1', author)
