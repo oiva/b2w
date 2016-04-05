@@ -124,7 +124,9 @@ def produce_list(books):
                 % (author_value, author, episode, episodeLink, episodeTitle)
 
         # compute occurences + identifying value to group by occurence, title
-        key = re.sub(r'\s{2,}', ' ', title)[:22]
+        key = re.sub(r'\s{2,}', ' ', title)
+        key = re.sub(r', Vol\.', ' Vol.', key)
+        key = re.sub(r'\:\s+', ':', key)[:18]
         val = groups[key] + ord(key[:1]) * 0.01 + ord(key[4:5]) * 0.001
         if len(key) > 10:
             val += ord(key[10:11]) * 0.001
@@ -251,10 +253,23 @@ def group_books(books):
     "Writing Down the Bones: Freeing the Writer Within (Shambhala Library)"
     "Writing Down the Bones eBook"
     "Writing Down the Bones"
+
+    Not working?
+    Wreck This Journal (Black) Expanded Ed.
+    Wreck This Journal
+
+    The Creative Habit
+    The Creative Habit:  Learn It and Use It for Life
+
+    Not the same:
+    A Writer's Coach: The Complete Guide to Writing Strategies That Work
+    A Writer's Coach: An Editor's Guide to Words That Work
     """
     groups = {}
     for book in books:
-        key = re.sub(r'\s{2,}', ' ', book[2])[:22]
+        key = re.sub(r'\s{2,}', ' ', book[2])
+        key = re.sub(r', Vol\.', ' Vol.', key)
+        key = re.sub(r':\s+', ':', key)[:18]
         try:
             groups[key] += 1
         except KeyError:
