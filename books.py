@@ -45,6 +45,7 @@ Book: .*?)</a>'
     books = []
 
     feed = feedparser.parse(url)
+    # feed = feedparser.parse(filename)
 
     for episode in feed.entries:
         links = regex.findall(episode.content[0].value)
@@ -198,7 +199,8 @@ def get_author(title):
     author = parts.pop()
 
     if len(parts) >= 1:
-        author = author.replace(' and ', ', ').replace(',,', ',')
+        author = author.replace(' and ', ', ').replace(',,', ',')\
+            .replace(' CZT', '')
 
         # remove middle name initials for easier heuristics about name
         simpleauthor = re.sub(r'\s[A-Z]\.', '', author)
@@ -289,7 +291,7 @@ def filter_books(books):
                      'MDM: ', 'Amazon.com: Boo', 'Amazon: ', 'Amazon.com: ',
                      ': Amazon.com', ' at Amazon.com', ':Amazon', '(Amazon)',
                      '(Amazon.com)', ': Explore similar items',
-                     ' - Amazon.com', 'Kindle Store',
+                     ' - Amazon.com', 'Kindle Store', 'eBook', ' Audio',
                      ' (HIGHLY recommended by Merlin)']
     filteredbooks = []
     for i, book in enumerate(books):
