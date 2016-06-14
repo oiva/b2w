@@ -67,7 +67,7 @@ def parse_books():
             'Arts, Crafts &amp; Sewing', 'Colored Pencils', 'Wish List',
             'Clothing', 'Pasta Bowls', 'Prime Pantry', 'Kum AS2',
             'Amazon Echo', 'Echo Dot', 'Hepa Filter Air Purifiers',
-            'Pencil Set']
+            'Pencil Set', 'Cell Phones &amp; Accessories']
     regex = re.compile(pattern, re.IGNORECASE)
     regex2 = re.compile(pattern2, re.IGNORECASE)
     books = []
