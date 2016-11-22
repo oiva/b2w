@@ -49,7 +49,8 @@ def parse_books():
     """Function for parsing feed and gathering links."""
     url = 'http://feeds.5by5.tv/b2w'
     # filename = './b2w.xml'
-    pattern = '<a[^>]* href="(http:\/\/www\.amazon\.com[^"]*).*?>(.*?)</a>\
+
+    pattern = '<a[^>]* href="(https?:\/\/www\.amazon\.com[^"]*).*?>(.*?)</a>\
 (?:</h4>\s*?(?:<p>(.*?)</p>))?'
     pattern2 = '<a[^>]*? href="((?!http:\/\/www\.amazon)[^"]*?)"[^>]*?>\
 ((?:Audio)?Book: .*?)</a>'
@@ -67,7 +68,10 @@ def parse_books():
             'Arts, Crafts &amp; Sewing', 'Colored Pencils', 'Wish List',
             'Clothing', 'Pasta Bowls', 'Prime Pantry', 'Kum AS2',
             'Amazon Echo', 'Echo Dot', 'Hepa Filter Air Purifiers',
-            'Pencil Set', 'Cell Phones &amp; Accessories']
+            'Pencil Set', 'Cell Phones &amp; Accessories', 'Online Backup',
+            'Home & Theater', 'Home Audio &amp; Theater', 'Alexa on Fire TV',
+            'Philips Hue', 'Amazon Launchpad', 'Rocketbook Wave', 'Launchpad',
+            'Gaffer Tape']
     regex = re.compile(pattern, re.IGNORECASE)
     regex2 = re.compile(pattern2, re.IGNORECASE)
     books = []
@@ -84,6 +88,9 @@ def parse_books():
             # skip items that are not really books
             for category in skip:
                 if category in link[1]:
+                    break
+                # sheesh
+                if 'Philips' in link[1] and 'Hue' in link[1]:
                     break
             else:
                 # include episode info
@@ -228,7 +235,7 @@ def get_author(title):
 
     if len(parts) >= 1:
         author = author.replace(' and ', ', ').replace(',,', ',')\
-            .replace(' CZT', '')
+            .replace(' CZT', '').replace(' (ed.)', '')
 
         # remove middle name initials for easier heuristics about name
         simpleauthor = re.sub(r'\s[A-Z]\.', '', author)
