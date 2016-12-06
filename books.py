@@ -271,6 +271,9 @@ def get_author(title):
     # change "Author,Author" to "Author, Author"
     author = re.sub(r',([^\s])', r', \1', author)
 
+    # remove spaces around author
+    author = author.strip()
+
     return (author, title)
 
 
