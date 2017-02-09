@@ -71,7 +71,7 @@ def parse_books():
             'Pencil Set', 'Cell Phones &amp; Accessories', 'Online Backup',
             'Home & Theater', 'Home Audio &amp; Theater', 'Alexa on Fire TV',
             'Philips Hue', 'Amazon Launchpad', 'Rocketbook Wave', 'Launchpad',
-            'Gaffer Tape']
+            'Gaffer Tape', 'Fire TV']
     regex = re.compile(pattern, re.IGNORECASE)
     regex2 = re.compile(pattern2, re.IGNORECASE)
     books = []
@@ -120,7 +120,7 @@ def produce_list(books):
               'The Wonderful Wizard of Oz', 'World War Hulk',
               'Incredible Hulk', 'Infinity Gauntlet', 'Punk Rock Jesus',
               'Black Science', 'Sex Criminals', 'Scott Pilgrim', 'BONE',
-              'Hilo', 'Amulet']
+              'Hilo', 'Amulet', 'Irredeemable']
 
     booklist = comiclist = ''
     bookcount = comiccount = authorcount = gtd = desccount = 0
