@@ -71,7 +71,9 @@ def parse_books():
             'Pencil Set', 'Cell Phones &amp; Accessories', 'Online Backup',
             'Home & Theater', 'Home Audio &amp; Theater', 'Alexa on Fire TV',
             'Philips Hue', 'Amazon Launchpad', 'Rocketbook Wave', 'Launchpad',
-            'Gaffer Tape', 'Fire TV']
+            'Gaffer Tape', 'Fire TV', 'Echo Look', 'Echo Show',
+            'Pencil Sharpener', 'Industrial &amp; Scientific',
+            'Safety Glasses', 'Hearing Protection']
     regex = re.compile(pattern, re.IGNORECASE)
     regex2 = re.compile(pattern2, re.IGNORECASE)
     books = []
@@ -163,7 +165,12 @@ def produce_list(books):
         key = re.sub(r'\s{2,}', ' ', title)
         key = re.sub(r', Vol\.', ' Vol.', key)
         key = re.sub(r'\:\s+', ':', key)[:18]
-        val = groups[key] + ord(key[:1]) * 0.01 + ord(key[4:5]) * 0.001
+
+        val = groups[key]
+        if len(key) > 0:
+            val += ord(key[:1]) * 0.01
+        if len(key) > 4:
+            val += ord(key[4:5]) * 0.001
         if len(key) > 10:
             val += ord(key[10:11]) * 0.001
         row += '<td class="mentions" data-value="%f">%d</td>\n</tr>\n'\
@@ -304,6 +311,9 @@ def group_books(books):
     The Creative Habit
     The Creative Habit:  Learn It and Use It for Life
 
+    The Rook
+    The Rook: A Novel
+
     Not the same:
     A Writer's Coach: The Complete Guide to Writing Strategies That Work
     A Writer's Coach: An Editor's Guide to Words That Work
@@ -361,14 +371,21 @@ def filter_books(books):
             title = 'Getting Things Done: The Art of Stress-Free Productivity'
 
         # one stupid link in ep 72
-        if title == 'Amazon':
+        elif title == 'Amazon':
             title = 'The Now Habit: A Strategic Program for Overcoming\
                      Procrastination and Enjoying Guilt-Free Play: \
                      Neil Fiore'
+        elif title[:9] == 'The Rook ':
+            title = 'The Rook: A Novel' + title[8:]
 
         # ep 15
         if title[:13] == 'Alan Watts - ':
             title = title[13:] + ' - Alan Watts'
+        # ep 299
+        elif title[:11] == 'Diane Duane':
+            title = title[12:] + ' - Diane Duane'
+        elif title[:12] == 'brad meltzer':
+            title = title[13:] + ' - Brad Meltzer'
 
         # try to guess author from title
         (author, title) = get_author(title)
