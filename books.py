@@ -11,10 +11,7 @@ different book recommendations made on the show.
 import codecs
 from datetime import datetime
 import feedparser
-import sys
 import re
-
-sys.stdout = codecs.getwriter('utf-8')(sys.stdout)
 
 authors = {
     'Christopher Eliopoulos': 'Christopher Eliopoulos',
@@ -206,7 +203,7 @@ def produce_list(books):
         html = html.replace('{gtd}', str(gtd))
 
     if not html:
-        print 'reading template from %s failed' % filename
+        print('reading template from %s failed' % filename)
         return
 
     with codecs.open(filename.replace('tmpl', 'html'), 'w', 'utf-8') as file:
@@ -239,6 +236,7 @@ def get_author(title):
     parts = filter(lambda title: title.strip(': '), parts)
 
     # take last part of title
+    parts = list(parts)
     author = parts.pop()
 
     if len(parts) >= 1:
@@ -404,5 +402,4 @@ def filter_books(books):
 # run
 books = parse_books()
 count = produce_list(books)
-print "found %d books and %d comics. %d authors and %d descriptions found."\
-    % count
+print("found {} books and {} comics. {} authors and {} descriptions found.".format(*count))
