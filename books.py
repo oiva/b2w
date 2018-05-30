@@ -67,13 +67,14 @@ def parse_books():
             'Ultra Pro Resealable Current Size Comic Bags', 'Model Rocket Kit',
             'Arts, Crafts &amp; Sewing', 'Colored Pencils', 'Wish List',
             'Clothing', 'Pasta Bowls', 'Prime Pantry', 'Kum AS2',
-            'Amazon Echo', 'Echo Dot', 'Hepa Filter Air Purifiers',
+            'Amazon Echo', 'Echo Dot', 'Echo Spot', 'Hepa Filter Air Purifiers',
             'Pencil Set', 'Cell Phones &amp; Accessories', 'Online Backup',
             'Home & Theater', 'Home Audio &amp; Theater', 'Alexa on Fire TV',
             'Philips Hue', 'Amazon Launchpad', 'Rocketbook Wave', 'Launchpad',
             'Gaffer Tape', 'Fire TV', 'Echo Look', 'Echo Show',
             'Pencil Sharpener', 'Industrial &amp; Scientific',
-            'Safety Glasses', 'Hearing Protection']
+            'Safety Glasses', 'Hearing Protection', 'Home Audio & Theater',
+            'Dual Outlet', 'Watches', 'Alexa Skills', 'Apple Tv 4th']
     regex = re.compile(pattern, re.IGNORECASE)
     regex2 = re.compile(pattern2, re.IGNORECASE)
     books = []
